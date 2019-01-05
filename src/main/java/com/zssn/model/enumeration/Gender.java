@@ -1,4 +1,4 @@
-package com.zssn.model;
+package com.zssn.model.enumeration;
 
 public enum Gender {
 
