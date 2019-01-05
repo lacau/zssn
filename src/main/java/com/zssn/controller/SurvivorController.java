@@ -1,8 +1,11 @@
 package com.zssn.controller;
 
 import com.zssn.model.entity.Survivor;
+import com.zssn.service.InfectionService;
 import com.zssn.service.SurvivorService;
+import com.zssn.vo.ReportInfectionVO;
 import com.zssn.vo.SurvivorVO;
+import com.zssn.vo.mapper.ReportInfectionVOMapper;
 import com.zssn.vo.mapper.SurvivorVOMapper;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +24,22 @@ public class SurvivorController {
     private SurvivorService survivorService;
 
     @Autowired
+    private InfectionService infectionService;
+
+    @Autowired
     private SurvivorVOMapper survivorVOMapper;
+
+    @Autowired
+    private ReportInfectionVOMapper reportInfectionVOMapper;
 
     @PostMapping
     public Survivor create(@RequestBody @Valid SurvivorVO request) {
         return survivorService.create(survivorVOMapper.fromVO(request));
+    }
+
+    @PostMapping(path = "/infected")
+    public void reportInfection(@RequestBody @Valid ReportInfectionVO request) {
+        infectionService.reportInfection(reportInfectionVOMapper.fromVO(request));
     }
 
     @GetMapping(path = "/{id}")

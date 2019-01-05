@@ -7,24 +7,42 @@ import com.zssn.model.repository.SurvivorRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Slf4j
 public class SurvivorService {
 
     @Autowired
     private SurvivorRepository survivorRepository;
 
+    @Transactional
     public Survivor create(Survivor survivor) {
         stackEqualResources(survivor);
 
         return survivorRepository.save(survivor);
     }
 
+    @Transactional
+    public void markAsInfected(Survivor survivor) {
+        survivor.setInfected(true);
+        survivorRepository.save(survivor);
+
+        log.info("Survivor marked as infected. survivorId={}", survivor.getId());
+    }
+
     public Survivor findById(Long id) {
-        return survivorRepository.findById(id).get();
+        final Optional<Survivor> survivor = survivorRepository.findById(id);
+        if (!survivor.isPresent()) {
+            // TODO: thrown api exception
+        }
+
+        return survivor.get();
     }
 
     private void stackEqualResources(Survivor survivor) {
