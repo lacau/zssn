@@ -1,5 +1,6 @@
 package com.zssn;
 
+import com.zssn.exceptions.NotFoundApiException;
 import com.zssn.model.entity.Inventory;
 import com.zssn.model.entity.Survivor;
 import com.zssn.model.enumeration.Gender;
@@ -8,6 +9,7 @@ import com.zssn.model.repository.SurvivorRepository;
 import com.zssn.service.SurvivorService;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -53,6 +55,34 @@ public class SurvivorServiceTest {
         Assert.assertEquals(getQuantityByResource(survivor.getInventory(), Resource.FOOD), TOTAL_FOOD);
         Assert.assertEquals(getQuantityByResource(survivor.getInventory(), Resource.MEDICATION), TOTAL_MEDICATION);
         Assert.assertEquals(getQuantityByResource(survivor.getInventory(), Resource.WATER), TOTAL_WATER);
+    }
+
+    @Test
+    public void testMarkAsInfected() {
+        Mockito.when(survivorRepository.save(Mockito.any(Survivor.class))).thenReturn(null);
+
+        final Survivor survivor = createSurvivorWithInventory();
+        survivorService.markAsInfected(survivor);
+        Mockito.verify(survivorRepository, Mockito.times(1)).save(Mockito.any(Survivor.class));
+        Assert.assertEquals(survivor.getName(), NAME);
+        Assert.assertEquals(survivor.getAge(), AGE);
+        Assert.assertEquals(survivor.getGender(), Gender.MALE);
+        Assert.assertTrue(survivor.isInfected());
+    }
+
+    @Test(expected = NotFoundApiException.class)
+    public void testFindByIdWhenSurvivorNotFound() {
+        Mockito.when(survivorRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
+
+        survivorService.findById(1L);
+    }
+
+    @Test
+    public void testFindByIdWhenSurvivorFound() {
+        final Survivor survivor = createSurvivorWithInventory();
+        Mockito.when(survivorRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(survivor));
+
+        survivorService.findById(1L);
     }
 
     private Survivor createSurvivorWithInventory() {
