@@ -1,5 +1,6 @@
 package com.zssn.service;
 
+import com.zssn.exceptions.NotFoundApiException;
 import com.zssn.model.entity.Inventory;
 import com.zssn.model.entity.Survivor;
 import com.zssn.model.enumeration.Resource;
@@ -39,7 +40,8 @@ public class SurvivorService {
     public Survivor findById(Long id) {
         final Optional<Survivor> survivor = survivorRepository.findById(id);
         if (!survivor.isPresent()) {
-            // TODO: thrown api exception
+            log.warn("Attempt to find invalid survivor. survivorId={}", id);
+            throw new NotFoundApiException("notfound.survivor.does.not.exists");
         }
 
         return survivor.get();
