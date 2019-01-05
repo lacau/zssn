@@ -2,18 +2,14 @@ package com.zssn.vo;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.zssn.model.enumeration.Gender;
+import java.util.List;
+import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 @Data
 public class SurvivorVO {
 
@@ -31,4 +27,8 @@ public class SurvivorVO {
     @NotNull
     @JsonProperty("gender")
     private Gender gender;
+
+    @Valid
+    @JsonProperty("inventory")
+    private List<ResourceVO> inventory;
 }

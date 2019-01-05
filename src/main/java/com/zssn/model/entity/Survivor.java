@@ -2,6 +2,7 @@ package com.zssn.model.entity;
 
 
 import com.zssn.model.enumeration.Gender;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,7 +11,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -40,6 +41,6 @@ public class Survivor {
     @Column(name = "infected", nullable = false)
     private boolean infected;
 
-    @OneToOne(mappedBy = "survivor", cascade = CascadeType.ALL)
-    private Inventory inventory;
+    @OneToMany(mappedBy = "survivor", cascade = CascadeType.ALL)
+    private List<Inventory> inventory;
 }
