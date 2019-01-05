@@ -1,6 +1,7 @@
 package com.zssn.service;
 
 import com.zssn.exceptions.ConflictApiException;
+import com.zssn.exceptions.UnprocessableEntityApiException;
 import com.zssn.model.entity.InfectionLog;
 import com.zssn.model.entity.Survivor;
 import com.zssn.model.repository.InfectionLogRepository;
@@ -25,6 +26,12 @@ public class InfectionService {
 
     @Transactional
     public void reportInfection(InfectionLog infectionLog) {
+        if (infectionLog.getReporter().getId() == infectionLog.getReported().getId()) {
+            log.warn("Survivor can not report himself. reporterId={}, reportedId={}", infectionLog.getReporter().getId(),
+                infectionLog.getReported().getId());
+            throw new UnprocessableEntityApiException("unprocessableentity.survivor.cant.report.himself");
+        }
+
         final Survivor reporter = survivorService.findById(infectionLog.getReporter().getId());
         final Survivor reported = survivorService.findById(infectionLog.getReported().getId());
 
