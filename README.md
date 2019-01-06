@@ -12,3 +12,7 @@ This project is a solution to this [problem](https://gist.github.com/akitaonrail
 * ***Swagger*** - Very straightforward way to provide a good quality api documentation to developers.
 * ***Lombok*** - Annotation processor to avoids repetitive code, makes code cleaner, speeds up development.
 * ***Junit/Mockito*** - Code without tests are difficult to maintain, add new features, scale, keep track of what is running as expected. Most common tools for testing with java.
+
+## **Database Diagram**
+![Alt text](https://github.com/lacau/zssn/blob/master/database/database_diagram.png?raw=true)
+
