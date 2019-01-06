@@ -16,3 +16,10 @@ This project is a solution to this [problem](https://gist.github.com/akitaonrail
 ## **Database Diagram**
 ![Alt text](https://github.com/lacau/zssn/blob/master/database/database_diagram.png?raw=true)
 
+## **Code structure**
+* ***com.zssn*** - Entry point and config classes.
+* ***com.zssn.controller*** - All controller that expose api features.
+* ***com.zssn.exeptions*** - Exception handler and api exceptions that maps http status.
+* ***com.zssn.model*** - Contains entity mappings and spring data repository classes.
+* ***com.zssn.service*** - All business rules are implemented in this classes.
+* ***com.zssn.vo*** - Mappers and View Objects to map requests/resposes.
