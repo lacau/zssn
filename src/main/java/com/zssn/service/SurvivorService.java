@@ -25,6 +25,7 @@ public class SurvivorService {
     @Transactional
     public Survivor create(Survivor survivor) {
         stackEqualResources(survivor);
+        survivor.getLocation().setSurvivor(survivor);
 
         return survivorRepository.save(survivor);
     }

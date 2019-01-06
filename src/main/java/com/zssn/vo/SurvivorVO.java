@@ -28,6 +28,12 @@ public class SurvivorVO {
     @JsonProperty("gender")
     private Gender gender;
 
+    @NotNull
+    @Valid
+    @JsonProperty("last_location")
+    private LocationVO locationVO;
+
+    @NotNull
     @Valid
     @JsonProperty("inventory")
     private List<ResourceVO> inventory;
