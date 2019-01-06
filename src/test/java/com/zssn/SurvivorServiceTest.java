@@ -2,11 +2,13 @@ package com.zssn;
 
 import com.zssn.exceptions.NotFoundApiException;
 import com.zssn.model.entity.Inventory;
+import com.zssn.model.entity.Location;
 import com.zssn.model.entity.Survivor;
 import com.zssn.model.enumeration.Gender;
 import com.zssn.model.enumeration.Resource;
 import com.zssn.model.repository.SurvivorRepository;
 import com.zssn.service.SurvivorService;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -100,6 +102,7 @@ public class SurvivorServiceTest {
             .age(AGE)
             .gender(Gender.MALE)
             .inventory(inventory)
+            .location(Location.builder().longitude(BigDecimal.ONE).latitude(BigDecimal.TEN).build())
             .build();
     }
 
