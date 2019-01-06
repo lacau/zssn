@@ -6,6 +6,7 @@ This project is a solution to this [problem](https://gist.github.com/akitaonrail
 ## **Technologies and why**
 
 * ***Java with spring(boot, data, web)*** - Reduce development and unit test time, scalable and realiable, large community, lots of good quality documentation, avoids write boilerplate code, provides embedded http servers. Actually it speaks for itself.
+* ***Docker*** - Standardizing your environment, ensure consistency across multiple development/release cycles, eliminate the “it works on my machine” :), all major cloud computing providers support it(AWS/GCP).
 * ***HSQLDB*** - Lightweight embedded database, easy to migrate, accept in memory manipulation to integration tests. Do not require a local installed database system to easy up and running.
 * ***Flyway*** - Powerful tool to migrate and assure database consistency on a continuous deployment/delivery.
 * ***Actuator*** - It's always crucial to have a good monitoring mechanism with easy access, has a very simple integration with grafana and prometheus.
@@ -29,3 +30,14 @@ This project is a solution to this [problem](https://gist.github.com/akitaonrail
 2. Survivor **can not** report the same survivor **more than once**.
 3. Coordinates: **Latitude** has precision(8) and scale(6), **Longitude** has precision(9) and scale(6), it's enough to represent **any point on earth**.
 4. If a survivor is created with **more than one resource** of the **same type**, its quantity will be **stacked**. Example: WATER(quantity 3), MEDICATION(quantity 5), WATER(quantity 6), this survivor will end up with **only one** register of **WATER(quantity 9(3+6))** on his inventory.
+
+## **Run with Docker**
+Theres two files in project root: **build-local-docker.sh** and **run-local.sh**
+1. Enter project root folder
+2. build image: ``./build-local-docker.sh`` it will build docker image, set archifact name, even remove old images.
+3. run: ``./run-local.sh`` it will run image created at step 1. Bind container port to 8080 and map a volume for persistence.
+
+## **Run without Docker**
+1. Enter project root folder
+2. run ``mvn clean install``
+3. run ``mvn spring-boot:run``
