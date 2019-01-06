@@ -2,6 +2,7 @@ package com.zssn.service;
 
 import com.zssn.exceptions.NotFoundApiException;
 import com.zssn.model.entity.Inventory;
+import com.zssn.model.entity.Location;
 import com.zssn.model.entity.Survivor;
 import com.zssn.model.enumeration.Resource;
 import com.zssn.model.repository.SurvivorRepository;
@@ -36,6 +37,15 @@ public class SurvivorService {
         survivorRepository.save(survivor);
 
         log.info("Survivor marked as infected. survivorId={}", survivor.getId());
+    }
+
+    @Transactional
+    public Survivor updateLocation(Long survivorId, Location location) {
+        final Survivor survivor = findById(survivorId);
+        survivor.getLocation().setLatitude(location.getLatitude());
+        survivor.getLocation().setLongitude(location.getLongitude());
+
+        return survivorRepository.save(survivor);
     }
 
     public Survivor findById(Long id) {
