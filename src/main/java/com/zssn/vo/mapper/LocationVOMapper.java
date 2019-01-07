@@ -13,4 +13,12 @@ public class LocationVOMapper extends VOMapper<Location, LocationVO> {
             .longitude(source.getLongitude())
             .build();
     }
+
+    @Override
+    public LocationVO toVO(Location source) {
+        return LocationVO.builder()
+            .latitude(source.getLatitude())
+            .longitude(source.getLongitude())
+            .build();
+    }
 }

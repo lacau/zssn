@@ -14,4 +14,9 @@ public class ReportInfectionVOMapper extends VOMapper<InfectionLog, ReportInfect
             .reported(Survivor.builder().id(source.getReportedId()).build())
             .build();
     }
+
+    @Override
+    public ReportInfectionVO toVO(InfectionLog source) {
+        return null;
+    }
 }

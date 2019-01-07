@@ -13,4 +13,12 @@ public class InventoryVOMapper extends VOMapper<Inventory, ResourceVO> {
             .resource(source.getResource())
             .build();
     }
+
+    @Override
+    public ResourceVO toVO(Inventory source) {
+        return ResourceVO.builder()
+            .resource(source.getResource())
+            .quantity(source.getQuantity())
+            .build();
+    }
 }

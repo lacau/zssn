@@ -8,10 +8,19 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class SurvivorVO {
+
+    @JsonProperty("id")
+    private Long id;
 
     @NotNull
     @Size(min = 1, max = 255)
@@ -27,6 +36,9 @@ public class SurvivorVO {
     @NotNull
     @JsonProperty("gender")
     private Gender gender;
+
+    @JsonProperty("infected")
+    private boolean infected;
 
     @NotNull
     @Valid

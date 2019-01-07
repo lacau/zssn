@@ -3,6 +3,8 @@ package com.zssn.vo.mapper;
 import com.zssn.model.entity.Inventory;
 import com.zssn.model.entity.Location;
 import com.zssn.model.entity.Survivor;
+import com.zssn.vo.LocationVO;
+import com.zssn.vo.ResourceVO;
 import com.zssn.vo.SurvivorVO;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,22 @@ public class SurvivorVOMapper extends VOMapper<Survivor, SurvivorVO> {
             .gender(source.getGender())
             .inventory(inventory)
             .location(location)
+            .build();
+    }
+
+    @Override
+    public SurvivorVO toVO(Survivor source) {
+        final List<ResourceVO> inventory = inventoryVOMapper.toVO(source.getInventory());
+        final LocationVO location = locationVOMapper.toVO(source.getLocation());
+
+        return SurvivorVO.builder()
+            .id(source.getId())
+            .name(source.getName())
+            .age(source.getAge())
+            .gender(source.getGender())
+            .infected(source.isInfected())
+            .inventory(inventory)
+            .locationVO(location)
             .build();
     }
 }

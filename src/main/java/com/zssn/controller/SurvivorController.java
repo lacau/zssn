@@ -39,13 +39,17 @@ public class SurvivorController {
     private LocationVOMapper locationVOMapper;
 
     @PostMapping
-    public Survivor create(@RequestBody @Valid SurvivorVO request) {
-        return survivorService.create(survivorVOMapper.fromVO(request));
+    public SurvivorVO create(@RequestBody @Valid SurvivorVO request) {
+        final Survivor survivor = survivorService.create(survivorVOMapper.fromVO(request));
+
+        return survivorVOMapper.toVO(survivor);
     }
 
     @PutMapping("/{id}/location")
-    public Survivor updateLocation(@PathVariable("id") Long survivorId, @RequestBody @Valid LocationVO request) {
-        return survivorService.updateLocation(survivorId, locationVOMapper.fromVO(request));
+    public SurvivorVO updateLocation(@PathVariable("id") Long survivorId, @RequestBody @Valid LocationVO request) {
+        final Survivor survivor = survivorService.updateLocation(survivorId, locationVOMapper.fromVO(request));
+
+        return survivorVOMapper.toVO(survivor);
     }
 
     @PostMapping(path = "/infected")
@@ -54,7 +58,9 @@ public class SurvivorController {
     }
 
     @GetMapping(path = "/{id}")
-    public Survivor getById(@PathVariable("id") Long id) {
-        return survivorService.findById(id);
+    public SurvivorVO getById(@PathVariable("id") Long id) {
+        final Survivor survivor = survivorService.findById(id);
+
+        return survivorVOMapper.toVO(survivor);
     }
 }
