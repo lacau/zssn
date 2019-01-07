@@ -42,7 +42,7 @@ public class Survivor {
     @Column(name = "infected", nullable = false)
     private boolean infected;
 
-    @OneToMany(mappedBy = "survivor", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "survivor", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Inventory> inventory;
 
     @OneToOne(mappedBy = "survivor", cascade = CascadeType.ALL)

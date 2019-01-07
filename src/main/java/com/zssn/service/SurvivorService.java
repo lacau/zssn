@@ -1,16 +1,11 @@
 package com.zssn.service;
 
 import com.zssn.exceptions.NotFoundApiException;
-import com.zssn.model.entity.Inventory;
 import com.zssn.model.entity.Location;
 import com.zssn.model.entity.Survivor;
-import com.zssn.model.enumeration.Resource;
 import com.zssn.model.repository.SurvivorRepository;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import com.zssn.util.ResourceUtils;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,9 +18,12 @@ public class SurvivorService {
     @Autowired
     private SurvivorRepository survivorRepository;
 
+    @Autowired
+    private ResourceUtils resourceUtils;
+
     @Transactional
     public Survivor create(Survivor survivor) {
-        stackEqualResources(survivor);
+        resourceUtils.stackEqualResources(survivor);
         survivor.getLocation().setSurvivor(survivor);
 
         return survivorRepository.save(survivor);
@@ -56,20 +54,5 @@ public class SurvivorService {
         }
 
         return survivor.get();
-    }
-
-    private void stackEqualResources(Survivor survivor) {
-        final Map<String, Integer> collect = survivor.getInventory().stream()
-            .collect(Collectors.groupingBy(i -> i.getResource().name(), Collectors.summingInt(i -> i.getQuantity())));
-
-        final List<Inventory> inventory = new ArrayList<>();
-
-        collect.forEach((key, value) -> inventory.add(Inventory.builder()
-            .resource(Resource.valueOf(key))
-            .quantity(value)
-            .survivor(survivor)
-            .build()));
-
-        survivor.setInventory(inventory);
     }
 }
