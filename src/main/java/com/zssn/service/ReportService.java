@@ -24,28 +24,36 @@ public class ReportService {
     private InventoryRepository inventoryRepository;
 
     public String reportInfected() {
-        final Integer infected = survivorRepository.countByInfectedTrue();
-        final Integer health = survivorRepository.countByInfectedFalse();
+        Integer infected = survivorRepository.countByInfectedTrue();
+        Integer health = survivorRepository.countByInfectedFalse();
+
+        infected = infected != null ? infected : 0;
+        health = health != null ? health : 0;
 
         final Integer total = infected + health;
-        final Double percentage = Double.valueOf(infected) / total * 100;
+        final Double percentage = calculatePercentage(infected, total);
 
         return String.format("%.2f%%", percentage);
     }
 
     public String reportNonInfected() {
-        final Integer infected = survivorRepository.countByInfectedTrue();
-        final Integer health = survivorRepository.countByInfectedFalse();
+        Integer infected = survivorRepository.countByInfectedTrue();
+        Integer health = survivorRepository.countByInfectedFalse();
+
+        infected = infected != null ? infected : 0;
+        health = health != null ? health : 0;
 
         final Integer total = infected + health;
-        final Double percentage = Double.valueOf(health) / total * 100;
+        final Double percentage = calculatePercentage(health, total);
 
         return String.format("%.2f%%", percentage);
     }
 
     public ResourceAvgVO reportResourceBySurvivor() {
-        final int survivorCount = survivorRepository.countByInfectedFalse();
+        Integer survivorCount = survivorRepository.countByInfectedFalse();
         final List<ResourceCountQueryResult> resourceCountList = inventoryRepository.sumQuantityByResource();
+
+        survivorCount = survivorCount != null ? survivorCount : 0;
 
         float avgAmmo = getAverageQuantityByResource(resourceCountList, Resource.AMMUNITION, survivorCount);
         float avgMedi = getAverageQuantityByResource(resourceCountList, Resource.MEDICATION, survivorCount);
@@ -53,20 +61,6 @@ public class ReportService {
         float avgFood = getAverageQuantityByResource(resourceCountList, Resource.FOOD, survivorCount);
 
         return new ResourceAvgVO(round(avgAmmo), round(avgMedi), round(avgWate), round(avgFood));
-    }
-
-    private float getAverageQuantityByResource(List<ResourceCountQueryResult> results, Resource resource, int survivorCount) {
-        for (ResourceCountQueryResult r : results) {
-            if (r.getResource() == resource) {
-                return r.getQuantity() != null ? r.getQuantity().floatValue() / survivorCount : 0;
-            }
-        }
-
-        return 0;
-    }
-
-    private float round(float number) {
-        return new BigDecimal(number).setScale(2, BigDecimal.ROUND_UP).floatValue();
     }
 
     public String reportPointsLostByAllInfected() {
@@ -79,5 +73,25 @@ public class ReportService {
         }
 
         return String.valueOf(pointsLost);
+    }
+
+    private float getAverageQuantityByResource(List<ResourceCountQueryResult> results, Resource resource, int survivorCount) {
+        if (!CollectionUtils.isEmpty(results)) {
+            for (ResourceCountQueryResult r : results) {
+                if (r.getResource() == resource) {
+                    return r.getQuantity() != null ? r.getQuantity().floatValue() / survivorCount : 0;
+                }
+            }
+        }
+
+        return 0;
+    }
+
+    private float round(float number) {
+        return new BigDecimal(number).setScale(2, BigDecimal.ROUND_UP).floatValue();
+    }
+
+    private Double calculatePercentage(Integer value, Integer total) {
+        return Double.valueOf(value) / total * 100;
     }
 }
