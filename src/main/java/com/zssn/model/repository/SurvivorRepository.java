@@ -7,4 +7,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SurvivorRepository extends CrudRepository<Survivor, Long> {
 
+    Integer countByInfectedFalse();
+
+    Integer countByInfectedTrue();
 }
