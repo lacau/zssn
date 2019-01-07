@@ -26,10 +26,11 @@ This project is a solution to this [problem](https://gist.github.com/akitaonrail
 * ***com.zssn.vo*** - Mappers and View Objects to map requests/resposes.
 
 ## **Additional rules**
-1. Survivor **can not** report him self as infected.
+1. Survivor **can not** report himself as infected.
 2. Survivor **can not** report the same survivor **more than once**.
-3. Coordinates: **Latitude** has precision(8) and scale(6), **Longitude** has precision(9) and scale(6), it's enough to represent **any point on earth**.
-4. If a survivor is created with **more than one resource** of the **same type**, its quantity will be **stacked**. Example: WATER(quantity 3), MEDICATION(quantity 5), WATER(quantity 6), this survivor will end up with **only one** register of **WATER(quantity 9(3+6))** on his inventory.
+4. Survivor **can not trade with himself**.
+4. Coordinates: **Latitude** has precision(8) and scale(6), **Longitude** has precision(9) and scale(6), it's enough to represent **any point on earth**.
+5. If a survivor is created with **more than one resource** of the **same type**, its quantity will be **stacked**. Example: WATER(quantity 3), MEDICATION(quantity 5), WATER(quantity 6), this survivor will end up with **only one** register of **WATER(quantity 9(3+6))** on his inventory.
 
 ## **Run with Docker**
 Theres two files in project root: **build-local-docker.sh** and **run-local.sh**
