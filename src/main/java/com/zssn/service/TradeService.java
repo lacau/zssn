@@ -9,6 +9,7 @@ import com.zssn.util.ResourceUtils;
 import com.zssn.vo.ResourceVO;
 import com.zssn.vo.TradeSurvivorVO;
 import com.zssn.vo.TradeVO;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class TradeService {
     private ResourceUtils resourceUtils;
 
     @Transactional
-    public void trade(TradeVO tradeVO) {
+    public TradeVO trade(TradeVO tradeVO) {
         final TradeSurvivorVO giver = tradeVO.getGiver();
         final TradeSurvivorVO receiver = tradeVO.getReceiver();
 
@@ -56,6 +57,30 @@ public class TradeService {
 
         survivorRepository.save(giverDB);
         survivorRepository.save(receiverDB);
+
+        return createTradeVO(giverDB, receiverDB);
+    }
+
+    private TradeVO createTradeVO(Survivor giverDB, Survivor receiverDB) {
+        return TradeVO.builder()
+            .giver(TradeSurvivorVO.builder()
+                .id(giverDB.getId())
+                .resources(createResourceVO(giverDB.getInventory()))
+                .build())
+            .receiver(TradeSurvivorVO.builder()
+                .id(receiverDB.getId())
+                .resources(createResourceVO(receiverDB.getInventory()))
+                .build())
+            .build();
+    }
+
+    private List<ResourceVO> createResourceVO(List<Inventory> inventory) {
+        final List<ResourceVO> resources = new ArrayList<>();
+        inventory.forEach((i) -> {
+            resources.add(ResourceVO.builder().resource(i.getResource()).quantity(i.getQuantity()).build());
+        });
+
+        return resources;
     }
 
     private void validateSurvivorInfection(Survivor survivor) {

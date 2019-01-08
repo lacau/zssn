@@ -17,7 +17,7 @@ public class TradeController {
     private TradeService tradeService;
 
     @PostMapping
-    public void create(@RequestBody @Valid TradeVO request) {
-        tradeService.trade(request);
+    public TradeVO create(@RequestBody @Valid TradeVO request) {
+        return tradeService.trade(request);
     }
 }
