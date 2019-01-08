@@ -1,4 +1,4 @@
-package com.zssn;
+package com.zssn.service;
 
 import com.zssn.exceptions.NotFoundApiException;
 import com.zssn.model.entity.Inventory;
@@ -7,7 +7,7 @@ import com.zssn.model.entity.Survivor;
 import com.zssn.model.enumeration.Gender;
 import com.zssn.model.enumeration.Resource;
 import com.zssn.model.repository.SurvivorRepository;
-import com.zssn.service.SurvivorService;
+import com.zssn.util.ResourceUtils;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +18,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -40,6 +41,9 @@ public class SurvivorServiceTest {
 
     @Mock
     private SurvivorRepository survivorRepository;
+
+    @Spy
+    private ResourceUtils resourceUtils;
 
     @Test
     public void testCreateWhenShouldStackEqualResources() {
@@ -85,6 +89,21 @@ public class SurvivorServiceTest {
         Mockito.when(survivorRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(survivor));
 
         survivorService.findById(1L);
+    }
+
+    @Test
+    public void testUpdateLocation() {
+        final Survivor survivor = createSurvivorWithInventory();
+        Mockito.when(survivorRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(survivor));
+        Mockito.when(survivorRepository.save(Mockito.any(Survivor.class))).thenAnswer(i -> i.getArguments()[0]);
+
+        final Survivor updatedSurvivor = survivorService
+            .updateLocation(1L, Location.builder().latitude(BigDecimal.valueOf(3)).longitude(BigDecimal.valueOf(5)).build());
+
+        Mockito.verify(survivorRepository, Mockito.times(1)).findById(Mockito.anyLong());
+        Mockito.verify(survivorRepository, Mockito.times(1)).save(Mockito.any(Survivor.class));
+        Assert.assertEquals(BigDecimal.valueOf(3), updatedSurvivor.getLocation().getLatitude());
+        Assert.assertEquals(BigDecimal.valueOf(5), updatedSurvivor.getLocation().getLongitude());
     }
 
     private Survivor createSurvivorWithInventory() {

@@ -37,7 +37,7 @@ public class TradeService {
         resourceUtils.stackEqualResources(receiver);
 
         validateSurvivor(giver, receiver);
-        validadeResourcePoints(giver, receiver);
+        validateResourcePoints(giver, receiver);
 
         final Survivor giverDB = survivorService.findById(giver.getId());
         final Survivor receiverDB = survivorService.findById(receiver.getId());
@@ -110,7 +110,7 @@ public class TradeService {
         }
     }
 
-    private void validadeResourcePoints(TradeSurvivorVO giver, TradeSurvivorVO receiver) {
+    private void validateResourcePoints(TradeSurvivorVO giver, TradeSurvivorVO receiver) {
         int giverPoints = 0;
         int receiverPoints = 0;
 
