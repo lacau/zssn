@@ -46,4 +46,4 @@ Theres two files in project root: **build-local-docker.sh** and **run-local.sh**
 ## **API Docs**
 You can found documentation through **swagger**.
 
-With the system up and running, just open yout browser and go to **http://localhost:8080/swagger-ui.html**
+With the system up and running, just open your browser and go to **http://localhost:8080/swagger-ui.html**
