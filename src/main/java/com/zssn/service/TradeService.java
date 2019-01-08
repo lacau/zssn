@@ -42,6 +42,9 @@ public class TradeService {
         final Survivor giverDB = survivorService.findById(giver.getId());
         final Survivor receiverDB = survivorService.findById(receiver.getId());
 
+        validateSurvivorInfection(giverDB);
+        validateSurvivorInfection(receiverDB);
+
         validateSurvivorResources(giverDB, giver.getResources());
         validateSurvivorResources(receiverDB, receiver.getResources());
 
@@ -53,6 +56,13 @@ public class TradeService {
 
         survivorRepository.save(giverDB);
         survivorRepository.save(receiverDB);
+    }
+
+    private void validateSurvivorInfection(Survivor survivor) {
+        if (survivor.isInfected()) {
+            log.warn("Infected survivors can not trade. survivorId={}", survivor.getId());
+            throw new UnprocessableEntityApiException("unprocessableentity.infected.survivor.cant.trade");
+        }
     }
 
     private void removeResource(Survivor survivor, List<ResourceVO> resources) {
